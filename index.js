@@ -10,6 +10,7 @@ import statusRouter from "./routes/status.js"
 import cors from "cors"
 import multer from "multer";
 import path from "path";
+import cloudinary from "./features/cloudinary.js";
 
 const __dirname = path.resolve();
 const app = express()
@@ -66,7 +67,21 @@ const pstorage = multer.diskStorage({
 const pupload = multer({ storage: pstorage })
 
 app.post("/api/v1/upload/profile", pupload.single("file"), (req, res) => {
-    res.status(200).json("Image Added Successfully")
+    cloudinary.uploader.upload(req.file.path, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({
+                success: false,
+                message: err
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: result
+            })
+        }
+    })
+
 })
 
 
@@ -84,7 +99,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 app.post("/api/v1/upload/images", upload.single("file"), (req, res) => {
-    res.status(200).json("Image Added Successfully")
+    cloudinary.uploader.upload(req.file.path, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({
+                success: false,
+                message: err
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: result
+            })
+        }
+    })
 })
 
 
