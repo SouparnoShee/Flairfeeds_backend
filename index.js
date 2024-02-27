@@ -67,7 +67,7 @@ const pstorage = multer.diskStorage({
 const pupload = multer({ storage: pstorage })
 
 app.post("/api/v1/upload/profile", pupload.single("file"), (req, res) => {
-    cloudinary.uploader.upload(req.file.path, (err, result) => {
+    cloudinary.uploader.upload(req.body.img, (err, result) => {
         if (err) {
             console.log(err)
             res.status(500).json({
@@ -99,7 +99,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 app.post("/api/v1/upload/images", upload.single("file"), (req, res) => {
-    cloudinary.uploader.upload(req.file.path, (err, result) => {
+    cloudinary.uploader.upload(req.body.img, (err, result) => {
         if (err) {
             console.log(err)
             res.status(500).json({
